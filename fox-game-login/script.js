@@ -1,7 +1,7 @@
 // Elementos do DOM
 const loginForm = document.getElementById('loginForm');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
+const emailInput = document.getElementById('email'); // CORRIGIDO
+const passwordInput = document.getElementById('password'); // CORRIGIDO
 const rememberMeCheckbox = document.getElementById('rememberMe');
 const foxCharacter = document.querySelector('.fox-character');
 const loginBox = document.querySelector('.login-box');
@@ -9,6 +9,7 @@ const pupils = document.querySelectorAll('.pupil');
 
 // Movimento dos olhos da raposa seguindo o cursor
 document.addEventListener('mousemove', (e) => {
+    if (!foxCharacter) return;
     const foxRect = foxCharacter.getBoundingClientRect();
     const foxCenterX = foxRect.left + foxRect.width / 2;
     const foxCenterY = foxRect.top + foxRect.height / 2;
@@ -25,61 +26,44 @@ document.addEventListener('mousemove', (e) => {
 
 // Animação da raposa quando o usuário está digitando
 let typingTimeout;
-usernameInput.addEventListener('input', () => {
-    foxCharacter.style.transform = 'scale(1.05)';
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        foxCharacter.style.transform = 'scale(1)';
-    }, 200);
-});
-
-passwordInput.addEventListener('input', () => {
-    foxCharacter.style.transform = 'scale(1.05)';
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        foxCharacter.style.transform = 'scale(1)';
-    }, 200);
-});
-
-// Raposa "cobre os olhos" quando o campo de senha está em foco
-passwordInput.addEventListener('focus', () => {
-    document.querySelectorAll('.eye').forEach(eye => {
-        eye.style.transform = 'scaleY(0.1)';
+if (emailInput) { // Adicionada verificação
+    emailInput.addEventListener('input', () => {
+        foxCharacter.style.transform = 'scale(1.05)';
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+            foxCharacter.style.transform = 'scale(1)';
+        }, 200);
     });
-});
+}
 
-passwordInput.addEventListener('blur', () => {
-    document.querySelectorAll('.eye').forEach(eye => {
-        eye.style.transform = 'scaleY(1)';
+if (passwordInput) { // Adicionada verificação
+    passwordInput.addEventListener('input', () => {
+        foxCharacter.style.transform = 'scale(1.05)';
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+            foxCharacter.style.transform = 'scale(1)';
+        }, 200);
     });
-});
 
-// Validação do formulário
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+    // Raposa "cobre os olhos" quando o campo de senha está em foco
+    passwordInput.addEventListener('focus', () => {
+        document.querySelectorAll('.eye').forEach(eye => {
+            eye.style.transform = 'scaleY(0.1)';
+        });
+    });
 
-    // Lendo 'email' e 'password' dos inputs corretos
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    passwordInput.addEventListener('blur', () => {
+        document.querySelectorAll('.eye').forEach(eye => {
+            eye.style.transform = 'scaleY(1)';
+        });
+    });
+}
 
-    // Validações básicas
-    if (!email.includes('@')) { // Validação de email
-        showError('Por favor, insira um email válido');
-        return;
-    }
 
-    if (password.length < 6) {
-        showError('A senha deve ter pelo menos 6 caracteres');
-        return;
-    }
-
-    // Chamando a função REAL em vez da simulação
-    loginReal(email, password);
-});
-
-    loginReal(email, password);
-
-    async function loginReal(email, password) {
+// ==========================================================
+// FUNÇÃO DE LOGIN REAL (CHAMA A API)
+// ==========================================================
+async function loginReal(email, password) {
     // Adiciona classe de carregamento
     const btnLogin = document.querySelector('.btn-login');
     const originalText = btnLogin.innerHTML;
@@ -93,7 +77,7 @@ loginForm.addEventListener('submit', (e) => {
     };
 
     try {
-        // 2. Chama a API Spring Boot
+        // 2. Chama a API Spring Boot (que está em http://localhost:8080/api/login)
         const resposta = await fetch('http://localhost:8080/api/login', {
             method: 'POST',
             headers: {
@@ -106,7 +90,7 @@ loginForm.addEventListener('submit', (e) => {
         const resultado = await resposta.json();
 
         if (resposta.ok) { // Se a API retornou 200 OK
-            showSuccess(resultado.message || 'Login realizado com sucesso!');
+            showSuccess(resultado.message || 'Login realizado com sucesso!'); // Mostra a mensagem de sucesso da API
 
             // Salvar preferência "Lembrar-me"
             if (rememberMeCheckbox.checked) {
@@ -120,7 +104,7 @@ loginForm.addEventListener('submit', (e) => {
 
             // Redirecionar após 2 segundos
             setTimeout(() => {
-                console.log('Redirecionando para a home...');
+                console.log('Redirecionando para o jogo...');
                 // Redireciona para a página 'inicio.html'
                 window.location.href = 'inicio.html'; 
             }, 2000);
@@ -139,71 +123,31 @@ loginForm.addEventListener('submit', (e) => {
         btnLogin.disabled = false;
     }
 }
-// Adicione esta função no seu script.js
-async function registrarUsuario(username, email, password) {
-    
-    const dadosRegistro = {
-        username: username,
-        email: email,
-        password: password
-    };
 
-    try {
-        // Chama o endpoint de REGISTRO da sua API
-        const resposta = await fetch('http://localhost:8080/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosRegistro)
-        });
+// ==========================================================
+// VALIDAÇÃO E ENVIO DO FORMULÁRIO (CORRIGIDO)
+// ==========================================================
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Impede o recarregamento da página
 
-        const resultado = await resposta.json();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        if (resposta.status === 201) { // 201 Created
-            alert('Cadastro realizado com sucesso! Faça o login.');
-            // Aqui você pode redirecionar o usuário de volta para o login
-            // window.location.href = 'index.html';
-        } else { // 409 Conflict (email/username já existe)
-            alert(`Erro: ${resultado.error}`);
+        // Validações básicas
+        if (!email.includes('@')) {
+            showError('Por favor, insira um email válido');
+            return;
         }
-    } catch (erro) {
-        alert('Erro de conexão com o servidor.');
-    }
-}
 
-// Função para simular login
-function simulateLogin(username, password) {
-    // Adiciona classe de carregamento
-    const btnLogin = document.querySelector('.btn-login');
-    const originalText = btnLogin.innerHTML;
-    btnLogin.innerHTML = '<span>Entrando...</span>';
-    btnLogin.disabled = true;
-
-    // Simula requisição ao servidor
-    setTimeout(() => {
-        // Simula login bem-sucedido
-        // Em produção, você verificaria as credenciais no servidor
-        if (username && password) {
-            showSuccess();
-            
-            // Salvar preferência "Lembrar-me"
-            if (rememberMeCheckbox.checked) {
-                localStorage.setItem('rememberMe', 'true');
-                localStorage.setItem('username', username);
-            }
-
-            // Redirecionar após 2 segundos
-            setTimeout(() => {
-                // Aqui você redirecionaria para o jogo
-                console.log('Redirecionando para o jogo...');
-                alert(`Bem-vindo ao Fox Adventure, ${username}! 🦊`);
-                // window.location.href = '/game.html';
-            }, 2000);
-        } else {
-            showError('Credenciais inválidas');
-            btnLogin.innerHTML = originalText;
-            btnLogin.disabled = false;
+        if (password.length < 6) {
+            showError('A senha deve ter pelo menos 6 caracteres');
+            return;
         }
-    }, 1500);
+
+        // Chama a função de login REAL
+        loginReal(email, password);
+    });
 }
 
 // Função para mostrar erro
@@ -240,7 +184,7 @@ function showError(message) {
 }
 
 // Função para mostrar sucesso
-function showSuccess() {
+function showSuccess(message) { // Aceita uma mensagem
     foxCharacter.classList.add('success');
     
     const successDiv = document.createElement('div');
@@ -256,7 +200,7 @@ function showSuccess() {
         font-weight: bold;
         animation: slideDown 0.3s ease;
     `;
-    successDiv.textContent = '✓ Login realizado com sucesso!';
+    successDiv.textContent = message; // Usa a mensagem
     loginForm.appendChild(successDiv);
 }
 
@@ -284,15 +228,20 @@ style.textContent = `
             transform: translateY(-10px);
         }
     }
+    @keyframes errorShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+    .login-box.error { animation: errorShake 0.5s ease-in-out; }
+    
+    @keyframes successShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+    .fox-character.success { animation: successShake 0.5s ease-in-out; }
 `;
 document.head.appendChild(style);
 
 // Carregar preferências salvas
 window.addEventListener('load', () => {
     if (localStorage.getItem('rememberMe') === 'true') {
-        const savedUsername = localStorage.getItem('username');
-        if (savedUsername) {
-            usernameInput.value = savedUsername;
+        const savedEmail = localStorage.getItem('email'); // CORRIGIDO
+        if (savedEmail) {
+            emailInput.value = savedEmail; // CORRIGIDO
             rememberMeCheckbox.checked = true;
         }
     }
@@ -315,12 +264,16 @@ forgotPasswordLink.addEventListener('click', (e) => {
     alert('Funcionalidade de recuperação de senha será implementada em breve! 🦊');
 });
 
-// Link "Registre-se agora"
+// Link "Registre-se agora" (JÁ DEVE FUNCIONAR POIS O HTML FOI CORRIGIDO)
 const registerLink = document.querySelector('.register-link a');
-registerLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Página de registro será implementada em breve! 🦊');
-});
+if(registerLink && registerLink.href.includes('#')) {
+    registerLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Se o link ainda for '#', avisa. Mas o ideal é o link `href="register.html"`
+        alert('Link de registro quebrado! Verifique o index.html');
+    });
+}
+
 
 // Efeito de partículas interativas
 const particles = document.querySelectorAll('.particle');
@@ -337,30 +290,30 @@ particles.forEach((particle, index) => {
 
 // Easter egg: clique na raposa
 let clickCount = 0;
-foxCharacter.addEventListener('click', () => {
-    clickCount++;
-    
-    if (clickCount === 1) {
-        foxCharacter.style.animation = 'bounce 0.5s ease';
-        setTimeout(() => {
-            foxCharacter.style.animation = 'bounce 2s ease-in-out infinite';
-        }, 500);
-    }
-    
-    if (clickCount === 5) {
-        alert('🦊 Você encontrou a raposa mágica! Ela te deseja boa sorte na aventura!');
-        clickCount = 0;
+if (foxCharacter) {
+    foxCharacter.addEventListener('click', () => {
+        clickCount++;
         
-        // Efeito especial
-        particles.forEach(particle => {
-            particle.style.animation = 'none';
+        if (clickCount === 1) {
+            foxCharacter.style.animation = 'bounce 0.5s ease';
             setTimeout(() => {
-                particle.style.animation = 'float 6s infinite ease-in-out';
-            }, 10);
-        });
-    }
-});
+                foxCharacter.style.animation = 'bounce 2s ease-in-out infinite';
+            }, 500);
+        }
+        
+        if (clickCount === 5) {
+            alert('🦊 Você encontrou a raposa mágica! Ela te deseja boa sorte na aventura!');
+            clickCount = 0;
+            
+            // Efeito especial
+            particles.forEach(particle => {
+                particle.style.animation = 'none';
+                setTimeout(() => {
+                    particle.style.animation = 'float 6s infinite ease-in-out';
+                }, 10);
+            });
+        }
+    });
+}
 
 console.log('🦊 Fox Adventure Login - Sistema carregado com sucesso!');
-console.log('Desenvolvido com HTML, CSS e JavaScript puro');
-
