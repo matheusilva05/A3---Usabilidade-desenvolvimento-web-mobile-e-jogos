@@ -58,12 +58,13 @@ passwordInput.addEventListener('blur', () => {
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const username = usernameInput.value.trim();
+    const emailInput = document.getElementById('email'); // Pega o input de email
+    const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // Validações básicas
-    if (username.length < 3) {
-        showError('O nome de usuário deve ter pelo menos 3 caracteres');
+    // Validações básicas (ajustadas para email)
+    if (!email.includes('@')) { // Validação simples de email
+        showError('Por favor, insira um email válido');
         return;
     }
 
@@ -72,8 +73,73 @@ loginForm.addEventListener('submit', (e) => {
         return;
     }
 
+    // **MUDANÇA AQUI:** Chamando a função REAL
+    loginReal(email, password);
+
     // Simulação de login (aqui você conectaria com seu backend)
-    simulateLogin(username, password);
+    // ==========================================================
+// 1. SUBSTITUA a função 'simulateLogin' inteira por esta:
+// ==========================================================
+async function loginReal(email, password) {
+    // Adiciona classe de carregamento
+    const btnLogin = document.querySelector('.btn-login');
+    const originalText = btnLogin.innerHTML;
+    btnLogin.innerHTML = '<span>Entrando...</span>';
+    btnLogin.disabled = true;
+
+    // 1. Monta o JSON que a API espera
+    const dadosLogin = {
+        email: email,
+        password: password
+    };
+
+    try {
+        // 2. Chama a API Spring Boot (que está em http://localhost:8080/api/login)
+        const resposta = await fetch('http://localhost:8080/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosLogin)
+        });
+
+        // 3. Pega a resposta da API (seja sucesso ou erro)
+        const resultado = await resposta.json();
+
+        if (resposta.ok) { // Se a API retornou 200 OK
+            showSuccess(resultado.message); // Mostra a mensagem de sucesso da API
+
+            // Salvar preferência "Lembrar-me"
+            if (rememberMeCheckbox.checked) {
+                localStorage.setItem('rememberMe', 'true');
+                localStorage.setItem('email', email); // Salva o email
+            }
+            
+            // ** IMPORTANTE: Salva o ID do jogador **
+            // Você VAI PRECISAR disso no jogo (Unity) para salvar a pontuação
+            localStorage.setItem('playerId', resultado.playerId);
+
+            // Redirecionar após 2 segundos
+            setTimeout(() => {
+                console.log('Redirecionando para o jogo...');
+                alert(`Bem-vindo ao Fox Adventure! ID: ${resultado.playerId}`);
+                // window.location.href = 'inicio.html'; // Descomente para redirecionar
+            }, 2000);
+
+        } else { // Se a API retornou um erro (401, 404, etc)
+            showError(resultado.error); // Mostra a mensagem de erro da API
+            btnLogin.innerHTML = originalText;
+            btnLogin.disabled = false;
+        }
+
+    } catch (erro) {
+        // Isso acontece se a API (Spring Boot) estiver offline
+        console.error('Erro de conexão:', erro);
+        showError('Não foi possível conectar ao servidor. O backend está rodando?');
+        btnLogin.innerHTML = originalText;
+        btnLogin.disabled = false;
+    }
+}
 });
 
 // Função para simular login
