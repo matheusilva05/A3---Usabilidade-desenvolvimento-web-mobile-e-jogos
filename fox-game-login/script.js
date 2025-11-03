@@ -58,13 +58,12 @@ passwordInput.addEventListener('blur', () => {
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const emailInput = document.getElementById('email'); // Pega o input de email
-    const email = emailInput.value.trim();
+    const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // Validações básicas (ajustadas para email)
-    if (!email.includes('@')) { // Validação simples de email
-        showError('Por favor, insira um email válido');
+    // Validações básicas
+    if (username.length < 3) {
+        showError('O nome de usuário deve ter pelo menos 3 caracteres');
         return;
     }
 
@@ -73,7 +72,6 @@ loginForm.addEventListener('submit', (e) => {
         return;
     }
 
-    // **MUDANÇA AQUI:** Chamando a função REAL
     loginReal(email, password);
 
     // Simulação de login (aqui você conectaria com seu backend)
@@ -141,6 +139,36 @@ async function loginReal(email, password) {
     }
 }
 });
+// Adicione esta função no seu script.js
+async function registrarUsuario(username, email, password) {
+    
+    const dadosRegistro = {
+        username: username,
+        email: email,
+        password: password
+    };
+
+    try {
+        // Chama o endpoint de REGISTRO da sua API
+        const resposta = await fetch('http://localhost:8080/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosRegistro)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.status === 201) { // 201 Created
+            alert('Cadastro realizado com sucesso! Faça o login.');
+            // Aqui você pode redirecionar o usuário de volta para o login
+            // window.location.href = 'index.html';
+        } else { // 409 Conflict (email/username já existe)
+            alert(`Erro: ${resultado.error}`);
+        }
+    } catch (erro) {
+        alert('Erro de conexão com o servidor.');
+    }
+}
 
 // Função para simular login
 function simulateLogin(username, password) {

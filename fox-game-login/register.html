@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fox Adventure - Registrar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background">
+        <div class="stars"></div>
+        <div class="forest-layer"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="fox-character">
+            <div class="fox-face">
+                <div class="ear ear-left"></div>
+                <div class="ear ear-right"></div>
+                <div class="fox-head">
+                    <div class="eye eye-left">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="eye eye-right">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="snout">
+                        <div class="nose"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-box">
+            <h1 class="game-title">Criar Conta</h1>
+            <p class="subtitle">Junte-se à floresta mágica</p>
+
+            <form id="registerForm" class="login-form">
+                
+                <div class="input-group">
+                    <label for="username">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Nome de usuário"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="email">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                             <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Email"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="password">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Senha (mín. 6 caracteres)"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <span>Criar Conta</span>
+                </button>
+            </form>
+
+            <p class="register-link">
+                Já tem uma conta? <a href="index.html">Faça o login</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <script src="register.js"></script>
+</body>
+</html>
