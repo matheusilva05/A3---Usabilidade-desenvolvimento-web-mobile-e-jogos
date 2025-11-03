@@ -1,6 +1,6 @@
 // Elementos do DOM
 const loginForm = document.getElementById('loginForm');
-const usernameInput = document.getElementById('username');
+const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const rememberMeCheckbox = document.getElementById('rememberMe');
 const foxCharacter = document.querySelector('.fox-character');
@@ -58,12 +58,13 @@ passwordInput.addEventListener('blur', () => {
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const username = usernameInput.value.trim();
+    // Lendo 'email' e 'password' dos inputs corretos
+    const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
     // Validações básicas
-    if (username.length < 3) {
-        showError('O nome de usuário deve ter pelo menos 3 caracteres');
+    if (!email.includes('@')) { // Validação de email
+        showError('Por favor, insira um email válido');
         return;
     }
 
@@ -72,13 +73,13 @@ loginForm.addEventListener('submit', (e) => {
         return;
     }
 
+    // Chamando a função REAL em vez da simulação
+    loginReal(email, password);
+});
+
     loginReal(email, password);
 
-    // Simulação de login (aqui você conectaria com seu backend)
-    // ==========================================================
-// 1. SUBSTITUA a função 'simulateLogin' inteira por esta:
-// ==========================================================
-async function loginReal(email, password) {
+    async function loginReal(email, password) {
     // Adiciona classe de carregamento
     const btnLogin = document.querySelector('.btn-login');
     const originalText = btnLogin.innerHTML;
@@ -92,7 +93,7 @@ async function loginReal(email, password) {
     };
 
     try {
-        // 2. Chama a API Spring Boot (que está em http://localhost:8080/api/login)
+        // 2. Chama a API Spring Boot
         const resposta = await fetch('http://localhost:8080/api/login', {
             method: 'POST',
             headers: {
@@ -105,7 +106,7 @@ async function loginReal(email, password) {
         const resultado = await resposta.json();
 
         if (resposta.ok) { // Se a API retornou 200 OK
-            showSuccess(resultado.message); // Mostra a mensagem de sucesso da API
+            showSuccess(resultado.message || 'Login realizado com sucesso!');
 
             // Salvar preferência "Lembrar-me"
             if (rememberMeCheckbox.checked) {
@@ -119,9 +120,9 @@ async function loginReal(email, password) {
 
             // Redirecionar após 2 segundos
             setTimeout(() => {
-                console.log('Redirecionando para o jogo...');
-                alert(`Bem-vindo ao Fox Adventure! ID: ${resultado.playerId}`);
-                // window.location.href = 'inicio.html'; // Descomente para redirecionar
+                console.log('Redirecionando para a home...');
+                // Redireciona para a página 'inicio.html'
+                window.location.href = 'inicio.html'; 
             }, 2000);
 
         } else { // Se a API retornou um erro (401, 404, etc)
@@ -138,7 +139,6 @@ async function loginReal(email, password) {
         btnLogin.disabled = false;
     }
 }
-});
 // Adicione esta função no seu script.js
 async function registrarUsuario(username, email, password) {
     
