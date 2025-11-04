@@ -1,0 +1,12 @@
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\ApiApplication.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\config\SecurityConfig.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\controller\GameController.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\dto\LeaderboardEntry.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\dto\LoginRequest.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\dto\RegisterRequest.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\dto\ScoreRequest.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\model\Leaderboard.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\model\Player.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\repository\LeaderboardRepository.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\repository\PlayerRepository.java
+C:\Users\eduar\OneDrive\Documentos\GitHub\A3---Usabilidade-desenvolvimento-web-mobile-e-jogos\api\src\main\java\com\seujogo\api\service\GameService.java

@@ -1,0 +1,12 @@
+com\seujogo\api\dto\LeaderboardEntry.class
+com\seujogo\api\model\Leaderboard.class
+com\seujogo\api\dto\ScoreRequest.class
+com\seujogo\api\dto\RegisterRequest.class
+com\seujogo\api\repository\LeaderboardRepository.class
+com\seujogo\api\model\Player.class
+com\seujogo\api\dto\LoginRequest.class
+com\seujogo\api\service\GameService.class
+com\seujogo\api\controller\GameController.class
+com\seujogo\api\repository\PlayerRepository.class
+com\seujogo\api\ApiApplication.class
+com\seujogo\api\config\SecurityConfig.class
