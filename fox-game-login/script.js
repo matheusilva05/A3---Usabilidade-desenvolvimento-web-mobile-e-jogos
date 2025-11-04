@@ -259,18 +259,20 @@ socialButtons.forEach(btn => {
 
 // Link "Esqueceu a senha?"
 const forgotPasswordLink = document.querySelector('.forgot-password');
-forgotPasswordLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Funcionalidade de recuperação de senha será implementada em breve! 🦊');
-});
+if(forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Funcionalidade de recuperação de senha será implementada em breve! 🦊');
+    });
+}
 
-// Link "Registre-se agora" (JÁ DEVE FUNCIONAR POIS O HTML FOI CORRIGIDO)
+// Link "Registre-se agora" 
 const registerLink = document.querySelector('.register-link a');
 if(registerLink && registerLink.href.includes('#')) {
     registerLink.addEventListener('click', (e) => {
         e.preventDefault();
-        // Se o link ainda for '#', avisa. Mas o ideal é o link `href="register.html"`
-        alert('Link de registro quebrado! Verifique o index.html');
+        alert('Redirecionando para o registro...');
+        window.location.href = 'register.html';
     });
 }
 
