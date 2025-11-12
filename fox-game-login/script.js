@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function()
             })
         }
     }
-
+)
 // Easter egg: clique na raposa
 let clickCount = 0;
 if (foxCharacter) {
