@@ -249,6 +249,16 @@ particles.forEach((particle, index) => {
         particle.style.transform = 'scale(1)';
     });
 });
+document.addEventListener('DOMContentLoaded', function()
+    {
+        const backButton = document.getElementById('backButton');
+        if (backButton){
+            backButton.addEventListener('click', function()
+            {
+                window.history.back();
+            })
+        }
+    }
 
 // Easter egg: clique na raposa
 let clickCount = 0;
@@ -262,6 +272,7 @@ if (foxCharacter) {
                 foxCharacter.style.animation = 'bounce 2s ease-in-out infinite';
             }, 500);
         }
+        
         
         if (clickCount === 5) {
             alert('🦊 Você encontrou a raposa mágica! Ela te deseja boa sorte na aventura!');
